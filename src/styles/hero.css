@@ -1,0 +1,330 @@
+.book-hero {
+  --page-width: min(500px, calc((100vw - 48px) / 2));
+  --book-height: min(80vh, 700px, calc(var(--page-width) * 1.4));
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.book-scene {
+  position: relative;
+  width: var(--page-width);
+  height: var(--book-height);
+  overflow: visible;
+  transition:
+    width 1.7s cubic-bezier(0.45, 0.02, 0.2, 1),
+    transform 1.7s cubic-bezier(0.45, 0.02, 0.2, 1);
+}
+
+.book-scene::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 8%;
+  right: 8%;
+  bottom: -22px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+.book-scene.is-open {
+  width: calc(var(--page-width) * 2);
+}
+
+.book-scene.is-away {
+  animation: bookAway 0.9s ease forwards;
+}
+
+.book {
+  position: relative;
+  z-index: 1;
+  width: calc(var(--page-width) * 2);
+  height: 100%;
+  margin-left: calc(var(--page-width) * -1);
+  perspective: 1600px;
+  perspective-origin: center center;
+  transform-style: preserve-3d;
+  transition: margin-left 1.7s cubic-bezier(0.45, 0.02, 0.2, 1);
+}
+
+.page-stack {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  bottom: 8px;
+  left: calc(var(--page-width) * 2 - 20px);
+  width: 18px;
+  border-radius: 0 8px 8px 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #f6efe6 0 3px,
+      #e7d8c8 3px 4px
+    );
+  pointer-events: none;
+}
+
+.book-scene.is-open .book {
+  margin-left: 0;
+}
+
+.turning-cover {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: var(--page-width);
+  width: calc(var(--page-width) - 12px);
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 1.7s cubic-bezier(0.42, 0.02, 0.18, 1);
+  cursor: pointer;
+}
+
+.book-scene.is-open .turning-cover {
+  transform: rotateY(-180deg);
+  pointer-events: none;
+}
+
+.turning-cover[aria-disabled="true"] {
+  cursor: default;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 6px 18px 18px 6px;
+}
+
+.face-front {
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  padding: 36px 28px 36px 42px;
+  color: var(--blush);
+  background:
+    radial-gradient(circle at 30% 18%, rgba(230, 201, 154, 0.28), transparent 36%),
+    linear-gradient(165deg, #8d3a4e, #4c1c2a 58%, #2a1218);
+  box-shadow:
+    inset 0 0 0 1px rgba(230, 201, 154, 0.45),
+    0 18px 28px rgba(0, 0, 0, 0.18);
+}
+
+.face-front h1 {
+  max-width: 100%;
+  font-family: var(--script);
+  font-size: clamp(2.5rem, 6.4vw, 3.7rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-align: center;
+  color: var(--gold);
+}
+
+.face-front svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 8px;
+  color: var(--rose);
+}
+
+.face-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(180deg, #f7f0e8, #eadccf);
+  box-shadow: inset 22px 0 26px rgba(74, 36, 28, 0.14);
+}
+
+.face-back .page-photo {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  bottom: 16px;
+  left: 22px;
+  width: calc(100% - 36px);
+  height: calc(100% - 32px);
+  max-width: none;
+  object-fit: cover;
+}
+
+.cover-board {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(180deg, #6d3142, #2a1218);
+  transform-origin: right center;
+  transform: rotateY(90deg);
+  pointer-events: none;
+}
+
+.cover-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 18px;
+  background: linear-gradient(90deg, #2a1218, #6d3142 55%, rgba(230, 201, 154, 0.35));
+}
+
+.cover-hint {
+  margin-top: 18px;
+  color: var(--gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.page-right {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: var(--page-width);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: var(--page-width);
+  height: 100%;
+  padding: 28px 32px 28px 42px;
+  overflow: hidden;
+  border-radius: 4px 18px 18px 4px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(230, 201, 154, 0.45), transparent 42%),
+    linear-gradient(180deg, #fbf6f0, #f0e4d8);
+  color: #2c1a20;
+  box-shadow: inset 18px 0 24px rgba(74, 36, 28, 0.08);
+}
+
+.page-photo,
+.page-left .photo-fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #140e11;
+}
+
+.page-right .eyebrow {
+  color: #8d5b49;
+}
+
+.page-right h1 {
+  font-size: clamp(1.8rem, 4.4vw, 3.4rem);
+  line-height: 0.95;
+  color: #2a161c;
+}
+
+.page-right h1 span {
+  display: block;
+  font-style: italic;
+}
+
+.page-right .lede {
+  margin-top: 16px;
+  color: #5c4038;
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.45;
+}
+
+.page-right .signature {
+  margin-top: 18px;
+  color: #7a3144;
+}
+
+.book-next {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 8px;
+  animation: fadeUp 0.8s ease both;
+}
+
+.book-next h1 {
+  max-width: 12em;
+  margin-bottom: 18px;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-style: italic;
+  line-height: 1.02;
+}
+
+.is-still,
+.is-still .book,
+.is-still .turning-cover {
+  transition: none;
+}
+
+@keyframes bookAway {
+  to {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 28px;
+  min-width: 0;
+}
+
+.intro > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.intro .intro-line {
+  max-width: min(12em, 100%);
+}
+
+.intro-line {
+  max-width: 12em;
+  font-size: clamp(2.2rem, 8vw, 4.4rem);
+  line-height: 1.02;
+  animation: lineIn 0.9s ease;
+}
+
+.intro-line.big {
+  font-size: clamp(4rem, 16vw, 7rem);
+}
+
+.intro-line.beat {
+  font-style: italic;
+}
+
+.intro-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.intro-stack .intro-line {
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
+  animation: none;
+}
+
+.intro-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.intro-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(230, 201, 154, 0.25);
+}
+
+.intro-dots .is-on {
+  background: var(--gold);
+}

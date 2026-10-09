@@ -1,0 +1,91 @@
+.login {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: min(460px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.login h1 {
+  width: 100%;
+  font-size: clamp(2.05rem, 9vw, 4.6rem);
+  line-height: 1.05;
+}
+
+.login > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.login-lead {
+  margin: 14px auto 0;
+  max-width: 15rem;
+  color: var(--muted);
+}
+
+.login-card {
+  margin-top: 28px;
+  padding: 22px 18px 16px;
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+.login-card label {
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--serif);
+  font-size: clamp(1.35rem, 6.2vw, 1.7rem);
+  line-height: 1.15;
+}
+
+.login-card input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-size: 16px;
+}
+
+.login-card input::placeholder {
+  color: rgba(203, 191, 182, 0.7);
+}
+
+.login-card .cta {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.login-feedback {
+  min-height: 1.5em;
+  margin-top: 12px;
+  text-align: center;
+  color: var(--rose);
+  font-size: 0.95rem;
+}
+
+.login-card.is-shaking {
+  animation: shake 0.45s ease;
+}
+
+.login-card.is-right {
+  box-shadow: 0 0 0 1px rgba(230, 201, 154, 0.7), 0 0 40px rgba(122, 49, 68, 0.45);
+}
+
+.login-finale h1 {
+  font-size: clamp(3.2rem, 12vw, 5.4rem);
+  font-style: italic;
+}
+
+.login .hearts {
+  position: absolute;
+  inset: auto;
+  width: 100%;
+  height: 220px;
+  left: 0;
+  bottom: 20%;
+}
